@@ -1,0 +1,4 @@
+/target/
+*.class
+shadowvault_export_*.json
+shadowvault_encrypted_backup_*.json

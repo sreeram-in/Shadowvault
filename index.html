@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShadowVault — Steganographic Password Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- MATRIX RAIN CANVAS -->
+    <canvas id="matrixCanvas"></canvas>
+
+    <!-- BOOT SCREEN -->
+    <div id="bootScreen">
+        <div id="bootLogo">SHADOWVAULT</div>
+        <div id="bootLog"></div>
+        <div id="bootBarWrap"><div id="bootBar"></div></div>
+    </div>
+
+    <!-- PANIC OVERLAY -->
+    <div id="panicOverlay">
+        <div id="panicText">VAULT LOCKED</div>
+        <div id="panicSub">Press ESC twice to unlock</div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <div class="nav-logo">
+                <span class="status-dot"></span>
+                SHADOWVAULT
+            </div>
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="switchTab('terminal')">⬡ HOME</button>
+                <button class="nav-tab" onclick="switchTab('encode')">🔐 ENCODE</button>
+                <button class="nav-tab" onclick="switchTab('decode')">🔓 DECODE</button>
+                <button class="nav-tab" onclick="switchTab('visualiser')">👁 VISUALISER</button>
+                <button class="nav-tab" onclick="switchTab('vault')">🗄 VAULT</button>
+                <button class="nav-tab" onclick="switchTab('intel')">📡 INTEL</button>
+            </div>
+            <div class="nav-right">
+                <span id="clock"></span>
+                <button id="themeToggle" onclick="toggleTheme()">🌙</button>
+                <button id="panicBtn" onclick="triggerPanic()">⚠ PANIC</button>
+                <div class="classify-badge">TOP SECRET</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main>
+
+        <!-- ═══════ HOME TAB ═══════ -->
+        <div id="tab-terminal" class="tab-content active">
+            <div class="hero">
+                <div class="classified-stamp">⚠ TOP SECRET ⚠</div>
+                <div class="hero-title">SHADOWVAULT</div>
+                <div class="hero-sub">steganographic password manager — operative system v2.4</div>
+
+                <div class="terminal-box">
+                    <div class="t-line"><span class="t-prompt">root@shadowvault:~$</span> ./init --secure</div>
+                    <div class="t-line t-anim" id="t1">Generating 256-bit key via PBKDF2...</div>
+                    <div class="t-line t-anim" id="t2">AES-256-GCM cipher initialized...</div>
+                    <div class="t-line t-anim" id="t3">LSB steganography engine online...</div>
+                    <div class="t-line t-anim" id="t4">Vault hidden in cover image...</div>
+                    <div class="t-line t-anim" id="t5"><span class="text-green">✓ SYSTEM READY. IDENTITY CONCEALED.</span></div>
+                    <div class="t-line"><span class="t-prompt">root@shadowvault:~$</span> <span class="t-cursor"></span></div>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-num">256</span>
+                        <div class="stat-label">BIT AES KEY</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">100K</span>
+                        <div class="stat-label">PBKDF2 ROUNDS</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">3bpp</span>
+                        <div class="stat-label">LSB CAPACITY</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">PNG</span>
+                        <div class="stat-label">LOSSLESS OUTPUT</div>
+                    </div>
+                </div>
+
+                <div class="how-grid">
+                    <div class="how-card">
+                        <div class="how-num">01</div>
+                        <div class="how-icon">🔑</div>
+                        <div class="how-title">PBKDF2 DERIVATION</div>
+                        <div class="how-desc">Password + salt → 100,000 SHA-256 rounds → 256-bit key. Each brute force guess costs 100K operations.</div>
+                    </div>
+                    <div class="how-card">
+                        <div class="how-num">02</div>
+                        <div class="how-icon">🔒</div>
+                        <div class="how-title">AES-256-GCM</div>
+                        <div class="how-desc">Message encrypted with random IV. GCM mode adds authentication tag — tampering causes instant failure.</div>
+                    </div>
+                    <div class="how-card">
+                        <div class="how-num">03</div>
+                        <div class="how-icon">🖼</div>
+                        <div class="how-title">LSB INJECTION</div>
+                        <div class="how-desc">RGB channel values change by at most one. Statistical analysis may still detect hidden data.</div>
+                    </div>
+                    <div class="how-card">
+                        <div class="how-num">04</div>
+                        <div class="how-icon">👻</div>
+                        <div class="how-title">PNG OUTPUT</div>
+                        <div class="how-desc">The result remains a normal PNG file, but LSB steganography is not undetectable and does not guarantee secrecy.</div>
+                    </div>
+                    <div class="how-card">
+                        <div class="how-num">05</div>
+                        <div class="how-icon">⚡</div>
+                        <div class="how-title">SCREEN CLEAR</div>
+                        <div class="how-desc">PANIC clears visible inputs and masks displayed passwords. It does not erase browser data or downloaded files.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ ENCODE TAB ═══════ -->
+        <div id="tab-encode" class="tab-content">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">ENCODE OPERATIVE</div>
+                    <div class="classify-badge">ENCRYPT + HIDE</div>
+                </div>
+                <div class="two-col">
+                    <!-- LEFT -->
+                    <div class="col-left">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <div class="panel-title">CARRIER IMAGE</div>
+                                <div class="panel-meta" id="capacityLabel">No image loaded</div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="drop-zone" id="encDropZone" onclick="document.getElementById('encImgInput').click()">
+                                    <div class="dz-icon">📡</div>
+                                    <div class="dz-text">DROP IMAGE or CLICK TO UPLOAD</div>
+                                    <div class="dz-sub">PNG / JPG / WEBP</div>
+                                    <img id="encPreview" alt="">
+                                </div>
+                                <input type="file" id="encImgInput" accept="image/*" style="display:none">
+                                <canvas id="encCanvas" style="display:none"></canvas>
+                                <div class="capacity-wrap">
+                                    <div class="cap-label">
+                                        <span>CAPACITY USED</span>
+                                        <span id="capPct">0%</span>
+                                    </div>
+                                    <div class="cap-bar-wrap">
+                                        <div class="cap-bar" id="capBar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <div class="panel-header">
+                                <div class="panel-title">ENCRYPTION CONFIG</div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="form-label">PBKDF2 ITERATIONS</label>
+                                    <input type="range" id="iterSlider" min="10000" max="500000" step="10000" value="100000" oninput="document.getElementById('iterVal').textContent = parseInt(this.value).toLocaleString()">
+                                    <div class="range-labels">
+                                        <span>10K (fast)</span>
+                                        <span id="iterVal">100,000</span>
+                                        <span>500K (max)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT -->
+                    <div class="col-right">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <div class="panel-title">SECRET MESSAGE</div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="form-label">MESSAGE TO HIDE</label>
+                                    <textarea class="form-textarea" id="secretMsg" placeholder="Enter your secret message..." oninput="updateCapacity()"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">MASTER PASSWORD</label>
+                                    <input type="password" class="form-input" id="encPassword" placeholder="••••••••••••" oninput="checkStrength(this.value, 'encStrengthBar', 'encStrengthLabel')">
+                                    <div class="strength-bar-wrap"><div class="strength-bar" id="encStrengthBar"></div></div>
+                                    <div class="strength-label" id="encStrengthLabel"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">CONFIRM PASSWORD</label>
+                                    <input type="password" class="form-input" id="encPasswordConfirm" placeholder="••••••••••••">
+                                </div>
+                                <button class="btn btn-primary btn-full" onclick="encodeMessage()">
+                                    🔐 ENCRYPT &amp; INJECT INTO IMAGE
+                                </button>
+                                <div id="encStatus" class="status-msg"></div>
+                            </div>
+                        </div>
+
+                        <div class="panel" id="downloadPanel" style="display:none">
+                            <div class="panel-header">
+                                <div class="panel-title">OUTPUT READY</div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="output-preview">
+                                    <canvas id="outputCanvas"></canvas>
+                                    <div class="output-stats" id="outputStats"></div>
+                                    <button class="btn btn-success btn-full" onclick="downloadOutput()">
+                                        ⬇ DOWNLOAD STEGO IMAGE
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ DECODE TAB ═══════ -->
+        <div id="tab-decode" class="tab-content">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">DECODE OPERATIVE</div>
+                    <div class="classify-badge">EXTRACT + DECRYPT</div>
+                </div>
+                <div class="two-col">
+                    <div class="col-left">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <div class="panel-title">STEGO IMAGE INPUT</div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="drop-zone" id="decDropZone" onclick="document.getElementById('decImgInput').click()">
+                                    <div class="dz-icon">🔍</div>
+                                    <div class="dz-text">DROP ENCODED IMAGE HERE</div>
+                                    <div class="dz-sub">Must be PNG encoded by ShadowVault</div>
+                                    <img id="decPreview" alt="">
+                                </div>
+                                <input type="file" id="decImgInput" accept="image/png" style="display:none">
+                                <canvas id="decCanvas" style="display:none"></canvas>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-header">
+                                <div class="panel-title">AUTHENTICATION</div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="form-label">MASTER PASSWORD</label>
+                                    <input type="password" class="form-input" id="decPassword" placeholder="••••••••••••">
+                                </div>
+                                <button class="btn btn-primary btn-full" onclick="decodeMessage()">
+                                    🔓 EXTRACT &amp; DECRYPT
+                                </button>
+                                <div id="decStatus" class="status-msg"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-right">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <div class="panel-title">DECRYPTED OUTPUT</div>
+                                <div id="verifyTag"></div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="decode-result" id="decodeResult"></div>
+                                <div class="decode-stats" id="decodeStats">
+                                    <div class="d-stat"><div class="d-num" id="dsBits">—</div><div class="d-label">BITS READ</div></div>
+                                    <div class="d-stat"><div class="d-num" id="dsBytes">—</div><div class="d-label">BYTES</div></div>
+                                    <div class="d-stat"><div class="d-num" id="dsChars">—</div><div class="d-label">CHARS</div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-header"><div class="panel-title">EXTRACTION PIPELINE</div></div>
+                            <div class="panel-body">
+                                <div id="decodePipeline" class="pipeline-log">Awaiting input...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ VISUALISER TAB ═══════ -->
+        <div id="tab-visualiser" class="tab-content">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">ENCRYPTION VISUALISER</div>
+                    <div class="classify-badge">LIVE ANALYSIS</div>
+                </div>
+                <div class="panel" style="margin-bottom:16px">
+                    <div class="panel-header"><div class="panel-title">INPUT</div></div>
+                    <div class="panel-body vis-input-grid">
+                        <div class="form-group">
+                            <label class="form-label">MESSAGE</label>
+                            <input class="form-input" id="visMsg" value="ShadowVault Secret">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">PASSWORD</label>
+                            <input type="password" class="form-input" id="visPwd" value="operative2024">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">CARRIER IMAGE (optional)</label>
+                            <input type="file" id="visImgInput" accept="image/*" class="form-input" style="padding:6px">
+                        </div>
+                        <div class="form-group" style="display:flex;align-items:flex-end">
+                            <button class="btn btn-primary btn-full" onclick="runVisualiser()">▶ ANALYSE</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="vis-pipeline" id="visPipeline">
+                    <button class="vis-btn active" onclick="showVisStep(0)" id="vstep0">01 PLAIN TEXT</button>
+                    <button class="vis-btn" onclick="showVisStep(1)" id="vstep1">02 PBKDF2</button>
+                    <button class="vis-btn" onclick="showVisStep(2)" id="vstep2">03 AES-GCM</button>
+                    <button class="vis-btn" onclick="showVisStep(3)" id="vstep3">04 LSB INJECT</button>
+                    <button class="vis-btn" onclick="showVisStep(4)" id="vstep4">05 OUTPUT</button>
+                </div>
+                <div id="vc0" class="vis-content active"></div>
+                <div id="vc1" class="vis-content"></div>
+                <div id="vc2" class="vis-content"></div>
+                <div id="vc3" class="vis-content"></div>
+                <div id="vc4" class="vis-content"></div>
+            </div>
+        </div>
+
+        <!-- ═══════ VAULT TAB ═══════ -->
+        <div id="tab-vault" class="tab-content">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">PASSWORD VAULT</div>
+                    <div id="vaultControls" style="display:none;gap:8px;align-items:center">
+                        <button class="btn btn-primary btn-sm" onclick="showAddEntry()">+ ADD ENTRY</button>
+                        <button class="btn btn-sm btn-outline" onclick="exportVault()">⬇ ENCRYPTED BACKUP</button>
+                        <button class="btn btn-sm btn-outline" onclick="lockPasswordVault()">LOCK</button>
+                    </div>
+                </div>
+
+                <div class="panel" id="vaultLockPanel">
+                    <div class="panel-header"><div class="panel-title">LOCAL ENCRYPTED VAULT</div></div>
+                    <div class="panel-body">
+                        <div class="slot-info">Your encrypted vault is saved in this browser only. Use a strong master password and keep an encrypted backup.</div>
+                        <div class="form-group">
+                            <label class="form-label" for="vaultMasterPassword">MASTER PASSWORD</label>
+                            <input type="password" class="form-input" id="vaultMasterPassword" autocomplete="current-password" placeholder="Enter a strong master password">
+                        </div>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap">
+                            <button class="btn btn-primary" onclick="createPasswordVault()">CREATE NEW VAULT</button>
+                            <button class="btn btn-outline" onclick="openPasswordVault()">UNLOCK VAULT</button>
+                            <button class="btn btn-outline" onclick="document.getElementById('vaultBackupInput').click()">IMPORT ENCRYPTED BACKUP</button>
+                            <input type="file" id="vaultBackupInput" accept="application/json,.json" hidden onchange="importVaultBackup(this.files[0])">
+                        </div>
+                        <div id="vaultAuthStatus" class="status-msg"></div>
+                    </div>
+                </div>
+
+                <div id="vaultWorkspace" style="display:none">
+
+                <div class="panel" id="addEntryPanel" style="display:none;margin-bottom:16px">
+                    <div class="panel-header"><div class="panel-title">NEW ENTRY</div></div>
+                    <div class="panel-body">
+                        <div class="three-col">
+                            <div class="form-group">
+                                <label class="form-label">SITE</label>
+                                <input class="form-input" id="entrySite" placeholder="github.com">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">USERNAME</label>
+                                <input class="form-input" id="entryUser" placeholder="user@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">PASSWORD</label>
+                                <div class="input-btn-row">
+                                    <input type="password" class="form-input" id="entryPwd" autocomplete="new-password" placeholder="••••••••">
+                                    <button class="btn btn-sm btn-primary" onclick="genAndFill()">GEN</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">NOTES</label>
+                            <input class="form-input" id="entryNotes" placeholder="Optional notes...">
+                        </div>
+                        <div style="display:flex;gap:8px">
+                            <button class="btn btn-success" onclick="addVaultEntry()">✓ SAVE</button>
+                            <button class="btn btn-outline btn-sm" onclick="document.getElementById('addEntryPanel').style.display='none'">CANCEL</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel" style="margin-bottom:16px">
+                    <div class="panel-header">
+                        <div class="panel-title">STORED CREDENTIALS</div>
+                        <input class="form-input" id="vaultSearch" placeholder="SEARCH..." style="width:180px;padding:5px 10px;font-size:11px" oninput="filterVault(this.value)">
+                    </div>
+                    <div class="vault-table-header">
+                        <span>SITE</span><span>USERNAME</span><span>PASSWORD</span><span>EXPIRES</span><span>ACTIONS</span>
+                    </div>
+                    <div id="vaultEntries"></div>
+                    <div id="vaultEmpty" class="vault-empty">VAULT EMPTY — ADD YOUR FIRST ENTRY</div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header"><div class="panel-title">PASSWORD GENERATOR</div></div>
+                    <div class="panel-body">
+                        <div class="gen-grid">
+                            <div>
+                                <div class="gen-output" id="genOutput">Press GENERATE</div>
+                                <div class="gen-options">
+                                    <label><input type="checkbox" id="genUpper" checked> UPPER</label>
+                                    <label><input type="checkbox" id="genLower" checked> lower</label>
+                                    <label><input type="checkbox" id="genDigits" checked> 0-9</label>
+                                    <label><input type="checkbox" id="genSymbols" checked> !@#$</label>
+                                    <label>
+                                        <input type="range" id="genLen" min="8" max="64" value="20" oninput="document.getElementById('genLenVal').textContent=this.value">
+                                        LEN: <span id="genLenVal">20</span>
+                                    </label>
+                                </div>
+                                <div id="genStrength"></div>
+                            </div>
+                            <div class="gen-btns">
+                                <button class="btn btn-primary" onclick="generatePassword()">⚡ GENERATE</button>
+                                <button class="btn btn-outline btn-sm" onclick="copyGenPwd()">📋 COPY</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="vaultStatus" class="status-msg"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ INTEL TAB ═══════ -->
+        <div id="tab-intel" class="tab-content">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">INTEL — JAVA PROJECT</div>
+                    <div class="classify-badge">CLASSIFIED</div>
+                </div>
+                <div class="intel-grid">
+                    <div class="panel">
+                        <div class="panel-header"><div class="panel-title">ARCHITECTURE</div></div>
+                        <div class="panel-body" id="archDiagram"></div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-header"><div class="panel-title">SETUP GUIDE</div></div>
+                        <div class="panel-body" id="setupGuide"></div>
+                    </div>
+                </div>
+                <div class="panel" style="margin-top:16px">
+                    <div class="panel-header">
+                        <div class="panel-title">JAVA CODE VIEWER</div>
+                        <div class="code-tabs" id="codeTabs"></div>
+                    </div>
+                    <div id="codeViewer"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- CLIPBOARD TOAST -->
+    <div id="clipToast">📋 Copied! Clears in <span id="clipCountdown">30</span>s</div>
+
+    <!-- IDLE LOCK OVERLAY -->
+    <div id="idleLock">
+        <div class="idle-box">
+            <div class="idle-title">SESSION PAUSED</div>
+            <div class="idle-sub">Sensitive fields cleared. Unlock the password vault again to view saved entries.</div>
+            <button class="btn btn-primary btn-full" onclick="unlockVault()">RESUME</button>
+        </div>
+    </div>
+
+    <!-- JS FILES -->
+    <script src="js/crypto.js"></script>
+    <script src="js/stego.js"></script>
+    <script src="js/vault.js"></script>
+    <script src="js/visualiser.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>
