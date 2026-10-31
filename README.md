@@ -2,15 +2,26 @@
 
 ShadowVault contains a static browser app and a separate Java command-line app. The website has no server or database: image encryption and the browser vault run locally in your browser.
 
+## Live Website
+
+[Open ShadowVault](https://sreeram-in.github.io/Shadowvault/)
+
+## Project Partners
+
+- [Akshay K A](https://github.com/akshay-ka-pkd)
+- P S Athul Krishna
+- [Swaroop Krishnan M](https://github.com/godkira8600)
+- Althaf
+
 ## Run The Website Locally
 
 From the project folder in PowerShell:
 
-```powershell
+~~~powershell
 py -m http.server 8000
-```
+~~~
 
-Open <http://localhost:8000>. Stop the server with `Ctrl+C`. If `py` is not available, use `python -m http.server 8000`.
+Open <http://localhost:8000>. Stop the server with Ctrl+C. If py is not available, use python -m http.server 8000.
 
 ## Use The Website
 
@@ -29,32 +40,19 @@ This project has not undergone a security audit. Steganography can be detected, 
 
 Install JDK 17 and Maven, then run these commands from the project root:
 
-```powershell
+~~~powershell
 mvn clean compile
 mvn exec:java
-```
+~~~
 
 The CLI can create or open a vault image, add/list/search/delete entries, run a health check, and generate passwords. Use PNG for the output image. The Java sources and browser app are separate implementations; the Java CLI does not run as the website's backend.
 
 ## Publish On GitHub Pages
 
-GitHub Pages can host this static website directly; no build step or Python server is needed online.
+GitHub Pages hosts this static website directly; no build step or Python server is needed online.
 
-1. Install [Git for Windows](https://git-scm.com/download/win) or [GitHub Desktop](https://desktop.github.com/). This computer currently does not have the `git` command available.
-2. On GitHub, create a new empty repository. Do not add a README, license, or `.gitignore` there because this project already has local files for those.
-3. In PowerShell, open this folder and run:
+1. Create a GitHub repository and upload the project files, preserving the css/, js/, and java/ folders. Keep index.html at the repository root. Do not upload the .git folder.
+2. Open **Settings → Pages**. Under **Build and deployment**, choose **Deploy from a branch**, select main and /(root), then select **Save**.
+3. After deployment, a project site is available at https://USERNAME.github.io/REPOSITORY/. For a repository named USERNAME.github.io, the address is https://USERNAME.github.io/.
 
-   ```powershell
-   git --version
-   git init -b main
-   git add .
-   git commit -m "Prepare ShadowVault for GitHub Pages"
-   git remote add origin https://github.com/USERNAME/REPOSITORY.git
-   git push -u origin main
-   ```
-
-   Replace `USERNAME` and `REPOSITORY` with the account and repository name. GitHub may open a browser sign-in during the first push.
-4. On GitHub, open **Settings → Pages**. Under **Build and deployment**, choose **Deploy from a branch**, select `main` and `/(root)`, then select **Save**.
-5. After GitHub finishes deployment, the site will be at `https://USERNAME.github.io/REPOSITORY/`. For a repository named `USERNAME.github.io`, the address is `https://USERNAME.github.io/`.
-
-To publish later changes, run `git add .`, `git commit -m "Describe the change"`, and `git push`. A public repository makes the website source public; never commit secrets or vault backup files.
+A public repository makes the website source public. Never commit secrets, real credentials, or vault backups.
